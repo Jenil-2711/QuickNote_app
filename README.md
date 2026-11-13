@@ -28,7 +28,7 @@ macOS 13+, Xcode 15+ (or the Swift 5.9+ toolchain).
 ## Run
 ```bash
 git clone https://github.com/Jenil-2711/QuickNote_app.git
-cd CozyQuickNoteDesk
+cd QuickNote_app
 swift run
 ```
 Open the folder in **VS Code** with the Swift extension (`swiftlang.swift-vscode`) or open `Package.swift` in Xcode.
