@@ -74,4 +74,26 @@ final class NoteManagerTests: XCTestCase {
         manager.delete(id: note.id)
         XCTAssertTrue(store.saved.isEmpty)
     }
+
+    func testEmptyArchiveRemovesOnlyCompletedNotes() {
+        let store = MemoryStore()
+        let manager = NoteManager(store: store, saveDelay: 60)
+        let a = manager.addNote(text: "a", color: .sage)
+        let b = manager.addNote(text: "b", color: .peach)
+        manager.addNote(text: "c", color: .pink)
+        manager.complete(id: a.id)
+        manager.complete(id: b.id)
+
+        XCTAssertEqual(manager.deleteAllArchived(), 2)
+        XCTAssertTrue(manager.archivedNotes.isEmpty)
+        XCTAssertEqual(manager.notes.map(\.text), ["c"])       // the active note is untouched
+        XCTAssertEqual(store.saved.map(\.text), ["c"])         // and it was saved right away
+    }
+
+    func testEmptyArchiveWithNothingCompletedDoesNothing() {
+        let manager = NoteManager(store: MemoryStore(), saveDelay: 60)
+        manager.addNote(text: "keep", color: .cream)
+        XCTAssertEqual(manager.deleteAllArchived(), 0)
+        XCTAssertEqual(manager.notes.count, 1)
+    }
 }

@@ -16,10 +16,15 @@ struct BoardView: View {
                     .contentShape(Rectangle())
                     .onTapGesture { NSApp.keyWindow?.makeFirstResponder(nil) }
 
-                ForEach(manager.activeNotes) { note in
-                    StickyNoteView(note: note, board: room.boardRect)
-                        .zIndex(Double(note.displayOrder))
+                // Notes are laid out from the top-left corner and moved with .offset,
+                // so each note only occupies (and only catches clicks on) its own area.
+                ZStack(alignment: .topLeading) {
+                    ForEach(manager.activeNotes) { note in
+                        StickyNoteView(note: note, board: room.boardRect)
+                            .zIndex(Double(note.displayOrder))
+                    }
                 }
+                .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
 
                 if manager.activeNotes.isEmpty {
                     EmptyBoardTag()

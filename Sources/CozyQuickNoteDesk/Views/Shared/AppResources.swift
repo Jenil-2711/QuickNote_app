@@ -11,11 +11,15 @@ enum AppResources {
         return Bundle.module
     }()
 
-    /// Loads `name.png` or `name.jpg` from the Resources folder, or nil if neither exists.
+    private static let cache = NSCache<NSString, NSImage>()
+
+    /// Loads `name.png` or `name.jpg` from the Resources folder (cached), or nil if neither exists.
     static func image(_ name: String) -> NSImage? {
+        if let cached = cache.object(forKey: name as NSString) { return cached }
         for ext in ["png", "jpg"] {
             if let url = bundle.url(forResource: name, withExtension: ext),
                let image = NSImage(contentsOf: url) {
+                cache.setObject(image, forKey: name as NSString)
                 return image
             }
         }

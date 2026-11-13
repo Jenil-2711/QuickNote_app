@@ -39,13 +39,13 @@ final class NoteManager: ObservableObject {
     // MARK: - Changing notes
 
     @discardableResult
-    func addNote(text: String, color: NoteColor, shape: NoteShape = NoteShape.random()) -> Note {
+    func addNote(text: String, color: NoteColor, design: NoteDesign = NoteDesign.random()) -> Note {
         let spot = NotePlacement.freeSpot(avoiding: activeNotes.map {
             CGPoint(x: $0.positionX, y: $0.positionY)
         })
         let now = Date()
         let note = Note(
-            id: UUID(), text: text, color: color, shape: shape,
+            id: UUID(), text: text, color: color, design: design,
             isCompleted: false, createdAt: now, updatedAt: now, completedAt: nil,
             positionX: spot.x, positionY: spot.y,
             tiltDegrees: Note.randomTilt(),
@@ -109,6 +109,16 @@ final class NoteManager: ObservableObject {
     func delete(id: UUID) {
         notes.removeAll { $0.id == id }
         saveNow()                      // deleting is saved immediately
+    }
+
+    /// Permanently removes every archived (completed) note in one go and returns how many were removed.
+    @discardableResult
+    func deleteAllArchived() -> Int {
+        let count = notes.filter { $0.isCompleted }.count
+        guard count > 0 else { return 0 }
+        notes.removeAll { $0.isCompleted }
+        saveNow()
+        return count
     }
 
     // MARK: - Saving

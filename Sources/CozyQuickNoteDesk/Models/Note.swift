@@ -6,7 +6,7 @@ struct Note: Identifiable, Codable, Equatable {
     var id: UUID
     var text: String
     var color: NoteColor
-    var shape: NoteShape
+    var design: NoteDesign
     var isCompleted: Bool
     var createdAt: Date
     var updatedAt: Date
@@ -21,5 +21,11 @@ struct Note: Identifiable, Codable, Equatable {
 
     static func randomTilt() -> Double {
         Double.random(in: -maxTilt...maxTilt)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, text, color, isCompleted, createdAt, updatedAt, completedAt
+        case positionX, positionY, tiltDegrees, displayOrder
+        case design = "shape"       // key name kept so notes saved by older versions still load
     }
 }

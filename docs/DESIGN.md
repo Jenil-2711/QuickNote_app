@@ -15,7 +15,7 @@ dropped in front of a picture.
 | Quick capture | Transparent maple leaf panel | Playful, distinct from the board's sticky notes |
 | Artwork | Rendered by Python scripts, committed as JPG | No licensing issues, reproducible, tweakable |
 | Note placement | Random spot on the cork board, far from other notes; stored as fractions of the board | Looks naturally filled and survives window resizing |
-| Notes | Mostly square pads with push-pins, occasional shapes, tilted -4°…+4° | Feels like a real pinboard, text stays readable |
+| Notes | Eight stationery designs (paper layer tinted by the note colour + untinted tape, bow and sticker layer), tilted -4°…+4° | Cozy, varied look; the colour picker still works on every design |
 | Completion | Tick, fade, move to Archive | Completing never deletes |
 | Privacy | No accounts, no cloud, no network | Everything stays on the Mac |
 

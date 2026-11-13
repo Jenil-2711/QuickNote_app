@@ -16,7 +16,7 @@ final class JSONNoteStoreTests: XCTestCase {
 
     private func sampleNote(_ text: String) -> Note {
         let now = Date()
-        return Note(id: UUID(), text: text, color: .sage, shape: .heart, isCompleted: false,
+        return Note(id: UUID(), text: text, color: .sage, design: .tapedBear, isCompleted: false,
                     createdAt: now, updatedAt: now, completedAt: nil,
                     positionX: 0.4, positionY: 0.6, tiltDegrees: 2.5, displayOrder: 1)
     }
@@ -33,8 +33,22 @@ final class JSONNoteStoreTests: XCTestCase {
         XCTAssertEqual(loaded.count, 1)
         XCTAssertEqual(loaded[0].text, note.text)
         XCTAssertEqual(loaded[0].color, .sage)
-        XCTAssertEqual(loaded[0].shape, .heart)
+        XCTAssertEqual(loaded[0].design, .tapedBear)
         XCTAssertEqual(loaded[0].tiltDegrees, 2.5, accuracy: 0.0001)
+    }
+
+    func testNotesSavedWithOldShapeNamesStillLoad() throws {
+        let store = JSONNoteStore(directory: directory)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let json = """
+        {"version":1,"notes":[{"id":"\(UUID().uuidString)","text":"old note","color":"sage","shape":"heart",
+        "isCompleted":false,"createdAt":"2026-11-01T10:00:00Z","updatedAt":"2026-11-01T10:00:00Z",
+        "positionX":0.5,"positionY":0.5,"tiltDegrees":1,"displayOrder":1}]}
+        """
+        try Data(json.utf8).write(to: store.fileURL)
+        let loaded = try store.load()
+        XCTAssertEqual(loaded.first?.text, "old note")
+        XCTAssertTrue(NoteDesign.allCases.contains(loaded[0].design))
     }
 
     func testDamagedFileIsSetAsideNotDeleted() throws {

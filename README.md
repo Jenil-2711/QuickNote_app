@@ -14,7 +14,7 @@ A native macOS app that turns your thoughts into sticky notes pinned on a cork b
 
 ## Features
 - 🍂 **Leaf quick-capture**: global shortcut **⌃⌥N** (built in) opens a transparent leaf to type on. `⌘↩` pins it, `Esc` leaves the text box, `Esc` again closes. Your draft is autosaved.
-- 📌 **Cork board of sticky notes**: pastel paper with push-pins, mostly square pads plus the occasional heart, apple, strawberry, bear, star or tree. Placed naturally at random, tilted ±4°, draggable. Positions and tilt are remembered.
+- 📌 **Cork board of sticky notes** in eight cozy stationery designs (spiral notebook, taped page, ring binder, perforated checklist with a chocolate bow, torn paper and more), decorated with little bear, gingerbread, cookie and cupcake stickers. Each new note gets one at random, in your choice of pastel colour, placed naturally on the board, tilted ±4° and draggable. Positions and tilt are remembered.
 - 🌿 **One cohesive room**: the board, the Archive (index cards in a wooden frame), Settings and the leaf popup all share the same wood, paper and warm-light look.
 - ✨ **Fairy lights** gently twinkle over the real bulbs in the room.
 - ✅ **Peaceful completion**: circular checkbox, green tick, gentle fade, then into the Archive. Restore or delete permanently from there.
@@ -43,7 +43,7 @@ swift test                 # unit tests (storage, damaged file, failing disk, qu
 Package.swift
 Sources/CozyQuickNoteDesk/
   App/            entry point, app delegate, constants (hard-coded shortcut)
-  Models/         Note, NoteColor, NoteShape, NotePlacement
+  Models/         Note, NoteColor, NoteDesign (the 8 designs), NotePlacement
   Storage/        JSONNoteStore (atomic, damage-safe)
   Managers/       NoteManager (the app's "brain")
   QuickCapture/   global hotkey, transparent leaf panel and view, draft autosave
@@ -54,9 +54,9 @@ Sources/CozyQuickNoteDesk/
     Archive/      index-card archive
     Settings/     settings sheet
     Shared/       resource loading
-  Resources/      room.jpg, wood.jpg, paper.jpg, leaf.png
+  Resources/      room.jpg, wood.jpg, paper.jpg, leaf.png, note_*_paper.png / note_*_deco.png
 Tests/            XCTest suites
-scripts/          generate_assets.py, studio_lib.py, generate_leaf.py, build_app.sh
+scripts/          generate_assets.py, studio_lib.py, generate_notes.py, generate_leaf.py, build_app.sh
 docs/             DESIGN.md
 ```
 
@@ -67,6 +67,7 @@ There are **no photographs** in this repository. The room, wood, cork, paper and
 pip install pillow numpy
 python3 scripts/generate_assets.py   # room.jpg, wood.jpg, paper.jpg + layout constants
 python3 scripts/generate_leaf.py     # leaf.png
+python3 scripts/generate_notes.py    # the 8 sticky-note designs
 ```
 Want a different mood? Edit the colours and object positions in `scripts/generate_assets.py` and re-run it. The cork-board position and light positions are exported to Swift automatically.
 
@@ -74,6 +75,7 @@ Want a different mood? Edit the colours and object positions in `scripts/generat
 - **Shortcut:** edit `hotKeyCode` / `hotKeyModifiers` in `AppConstants.swift`.
 - **Palette and fonts:** `Theme/Theme.swift`.
 - **Room:** `scripts/generate_assets.py`.
+- **Note designs:** `scripts/generate_notes.py` (paper layout, stickers, and where text may be written).
 
 ## Roadmap
 - [x] Foundation, note engine, autosave

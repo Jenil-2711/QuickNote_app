@@ -5,6 +5,6 @@
     { "label": "Run", "type": "shell", "command": "swift run", "problemMatcher": [] },
     { "label": "Test", "type": "shell", "command": "swift test", "group": "test", "problemMatcher": [] },
     { "label": "Package .app", "type": "shell", "command": "./scripts/build_app.sh", "problemMatcher": [] },
-    { "label": "Regenerate artwork", "type": "shell", "command": "python3 scripts/generate_assets.py && python3 scripts/generate_leaf.py", "problemMatcher": [] }
+    { "label": "Regenerate artwork", "type": "shell", "command": "python3 scripts/generate_assets.py && python3 scripts/generate_notes.py && python3 scripts/generate_leaf.py", "problemMatcher": [] }
   ]
 }

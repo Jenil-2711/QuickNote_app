@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// One sticky note pinned to the cork board: draggable, editable in place, tilted a few degrees.
+/// One sticky note on the cork board: draggable, editable in place, tilted a few degrees.
 struct StickyNoteView: View {
     let note: Note
     /// The cork surface in window coordinates.
@@ -17,7 +17,7 @@ struct StickyNoteView: View {
     private let controlsHeight: CGFloat = 30
 
     private var baseSide: CGFloat { min(max(board.width * 0.17, 120), 180) }
-    private var side: CGFloat { baseSide * CGFloat(note.shape.sizeScale) }
+    private var side: CGFloat { baseSide * CGFloat(note.design.sizeScale) }
 
     private var pinColor: Color {
         let colors = [Color(red: 0.78, green: 0.22, blue: 0.20),
@@ -33,34 +33,26 @@ struct StickyNoteView: View {
             controls
         }
         .frame(width: side, height: side + controlsHeight)
+        .onHover { isHovering = $0 }
         .rotationEffect(.degrees(note.tiltDegrees))
         .opacity(isFading ? 0 : 1)
         .scaleEffect(isFading ? 0.92 : 1)
-        .position(x: board.minX + CGFloat(note.positionX) * board.width,
-                  y: board.minY + CGFloat(note.positionY) * board.height)
-        .offset(dragOffset)
-        .onHover { isHovering = $0 }
+        // Placed with .offset from the board's top-left corner instead of .position.
+        // .position made every note's frame as big as the whole room, so the newest note
+        // swallowed clicks meant for the notes underneath it (they could only be ticked
+        // in the order they were added).
+        .offset(x: board.minX + CGFloat(note.positionX) * board.width - side / 2 + dragOffset.width,
+                y: board.minY + CGFloat(note.positionY) * board.height - (side + controlsHeight) / 2 + dragOffset.height)
     }
 
     // MARK: - Paper
 
     private var paper: some View {
-        let tr = note.shape.textRect
-        let shape = StickyShape(kind: note.shape)
+        let tr = note.design.textRect
         return ZStack {
-            shape.fill(note.color.color)
-            shape.stroke(note.color.color, style: StrokeStyle(lineWidth: 8, lineJoin: .round))
-            if let texture = AppResources.image("paper") {
-                Image(nsImage: texture)
-                    .resizable(resizingMode: .tile)
-                    .blendMode(.multiply)
-                    .opacity(0.45)
-                    .clipShape(shape)
-                    .allowsHitTesting(false)
-            }
-            shape.fill(LinearGradient(colors: [.white.opacity(0.28), .clear, .black.opacity(0.10)],
-                                      startPoint: .topLeading, endPoint: .bottomTrailing))
-                .allowsHitTesting(false)
+            NoteArt(design: note.design, tint: note.color.color)
+                .frame(width: side, height: side)
+                .shadow(color: .black.opacity(0.38), radius: 4, x: 2, y: 4)
 
             TextEditor(text: Binding(
                 get: { note.text },
@@ -72,16 +64,18 @@ struct StickyNoteView: View {
             .frame(width: tr.width * side, height: tr.height * side)
             .position(x: tr.midX * side, y: tr.midY * side)
 
-            PushPin(color: pinColor)
-                .position(x: side / 2, y: CGFloat(note.shape.pinY) * side)
-                .allowsHitTesting(false)
+            if let pinY = note.design.pinY {
+                PushPin(color: pinColor)
+                    .position(x: side / 2, y: CGFloat(pinY) * side)
+                    .allowsHitTesting(false)
+            }
         }
         .frame(width: side, height: side)
-        .shadow(color: .black.opacity(0.38), radius: 4, x: 2, y: 4)
         // Dragging works from the paper margins; the text box handles its own clicks,
         // so dragging never fights with text selection.
-        .contentShape(shape)
+        .contentShape(Rectangle())
         .gesture(dragGesture)
+        .onTapGesture { manager.bringToFront(id: note.id) }   // clicking a note lifts it above its neighbours
     }
 
     private var dragGesture: some Gesture {

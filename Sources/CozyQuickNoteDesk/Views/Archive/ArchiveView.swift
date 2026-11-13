@@ -3,8 +3,14 @@ import SwiftUI
 /// Completed notes, filed on index cards inside a wooden-framed paper panel,
 /// with the study room softly blurred behind it.
 struct ArchiveView: View {
+    /// What the confirmation is asking about.
+    private enum PendingDelete {
+        case note(Note)
+        case everything(count: Int)
+    }
+
     @EnvironmentObject private var manager: NoteManager
-    @State private var noteToDelete: Note?
+    @State private var pending: PendingDelete?
 
     var body: some View {
         ZStack {
@@ -14,10 +20,23 @@ struct ArchiveView: View {
                 .frame(maxWidth: 800, maxHeight: .infinity)
                 .padding(.horizontal, 32)
                 .padding(.vertical, 24)
-
-            if let note = noteToDelete {
-                confirmation(for: note)
+        }
+        // One standard macOS confirmation for both "delete this note" and "empty the archive".
+        .alert(alertTitle,
+               isPresented: Binding(get: { pending != nil },
+                                    set: { if !$0 { pending = nil } }),
+               presenting: pending) { action in
+            Button("Keep it", role: .cancel) {}
+            Button(confirmLabel(for: action), role: .destructive) {
+                switch action {
+                case .note(let note):
+                    manager.delete(id: note.id)
+                case .everything:
+                    manager.deleteAllArchived()
+                }
             }
+        } message: { action in
+            Text(message(for: action))
         }
     }
 
@@ -25,16 +44,7 @@ struct ArchiveView: View {
 
     private var panel: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 2) {
-                Text("The Archive")
-                    .font(Theme.serif(26))
-                    .foregroundColor(Theme.ink)
-                Text("Finished notes rest here. Restore them or let them go.")
-                    .font(Theme.hand(14))
-                    .foregroundColor(Theme.ink.opacity(0.7))
-            }
-            .padding(.top, 20)
-            .padding(.bottom, 14)
+            header
 
             Rectangle().fill(Theme.walnut.opacity(0.25)).frame(height: 1).padding(.horizontal, 24)
 
@@ -56,13 +66,49 @@ struct ArchiveView: View {
                     .padding(20)
                 }
             }
+
+            if !manager.archivedNotes.isEmpty {
+                Rectangle().fill(Theme.walnut.opacity(0.25)).frame(height: 1).padding(.horizontal, 24)
+                footer
+            }
         }
         .background(PaperSurface())
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .padding(10)
         .background(WoodSurface().clipShape(RoundedRectangle(cornerRadius: 14)))
-        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Color.black.opacity(0.5), lineWidth: 1.5))
         .shadow(color: .black.opacity(0.5), radius: 18, x: 0, y: 10)
+    }
+
+    private var header: some View {
+        VStack(spacing: 2) {
+            Text("The Archive")
+                .font(Theme.serif(26))
+                .foregroundColor(Theme.ink)
+            Text("Finished notes rest here. Restore them or let them go.")
+                .font(Theme.hand(14))
+                .foregroundColor(Theme.ink.opacity(0.7))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 20)
+        .padding(.bottom, 14)
+    }
+
+    /// Bottom bar with the count and the "Empty Archive" button.
+    private var footer: some View {
+        let count = manager.archivedNotes.count
+        return HStack(spacing: 12) {
+            Text(count == 1 ? "1 finished note" : "\(count) finished notes")
+                .font(Theme.hand(15))
+                .foregroundColor(Theme.ink.opacity(0.75))
+            Spacer(minLength: 12)
+            Button("Empty Archive") {
+                pending = .everything(count: count)
+            }
+            .buttonStyle(CozyButtonStyle(kind: .danger))
+            .help("Permanently delete every finished note")
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 12)
     }
 
     private func card(for note: Note) -> some View {
@@ -86,7 +132,7 @@ struct ArchiveView: View {
             VStack(spacing: 8) {
                 Button("Restore") { manager.restore(id: note.id) }
                     .buttonStyle(CozyButtonStyle(kind: .primary))
-                Button("Delete") { noteToDelete = note }
+                Button("Delete") { pending = .note(note) }
                     .buttonStyle(CozyButtonStyle(kind: .danger))
             }
         }
@@ -104,37 +150,29 @@ struct ArchiveView: View {
         return text
     }
 
-    // MARK: - Delete confirmation (a paper card, not a system alert)
+    // MARK: - Confirmation wording
 
-    private func confirmation(for note: Note) -> some View {
-        ZStack {
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-                .onTapGesture { noteToDelete = nil }
+    private var alertTitle: String {
+        switch pending {
+        case .some(.everything): return "Empty the archive?"
+        default:                 return "Delete permanently?"
+        }
+    }
 
-            VStack(spacing: 14) {
-                Text("Delete permanently?")
-                    .font(Theme.serif(20))
-                    .foregroundColor(Theme.ink)
-                Text("This note will be gone for good.")
-                    .font(Theme.hand(16))
-                    .foregroundColor(Theme.ink.opacity(0.8))
-                HStack(spacing: 12) {
-                    Button("Keep it") { noteToDelete = nil }
-                        .buttonStyle(CozyButtonStyle(kind: .plain))
-                    Button("Delete") {
-                        manager.delete(id: note.id)
-                        noteToDelete = nil
-                    }
-                    .buttonStyle(CozyButtonStyle(kind: .danger))
-                }
-            }
-            .padding(26)
-            .frame(width: 340)
-            .background(PaperSurface().clipShape(RoundedRectangle(cornerRadius: 8)))
-            .padding(8)
-            .background(WoodSurface().clipShape(RoundedRectangle(cornerRadius: 12)))
-            .shadow(color: .black.opacity(0.5), radius: 16, x: 0, y: 10)
+    private func confirmLabel(for action: PendingDelete) -> String {
+        switch action {
+        case .note:       return "Delete"
+        case .everything: return "Empty Archive"
+        }
+    }
+
+    private func message(for action: PendingDelete) -> String {
+        switch action {
+        case .note:
+            return "This note will be gone for good."
+        case .everything(let count):
+            return count == 1 ? "The 1 finished note will be gone for good."
+                              : "All \(count) finished notes will be gone for good."
         }
     }
 }
