@@ -27,7 +27,7 @@ macOS 13+, Xcode 15+ (or the Swift 5.9+ toolchain).
 
 ## Run
 ```bash
-git clone https://github.com/Jenil-2711/CozyQuickNoteDesk.git
+git clone https://github.com/Jenil-2711/QuickNote_app.git
 cd CozyQuickNoteDesk
 swift run
 ```
