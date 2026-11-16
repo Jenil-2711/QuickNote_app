@@ -6,11 +6,35 @@ A native macOS app that turns your thoughts into sticky notes pinned on a cork b
 
 **Capture instantly · save automatically · organize naturally · complete peacefully.**
 
-<!-- Add screenshots here once you have them:
-![Study room](docs/board.png)
-![Leaf quick capture](docs/leaf.png)
-![Archive](docs/archive.png)
--->
+
+## Screenshots
+
+### The Study Room
+
+The cozy workspace, featuring a cork board, customizable sticky notes, and appearance settings.
+
+![Main cork board](screenshots/boardmain.png)
+
+![Sticky notes and stationery designs](screenshots/board2.png)
+
+![Empty board](screenshots/board1.png)
+
+![Settings window](screenshots/board.png)
+
+### Quick Capture
+
+Capture thoughts instantly using the floating maple leaf interface.
+
+![Leaf quick capture](screenshots/leaf.png)
+
+### Archive
+
+Completed notes are stored in the archive, where they can be restored or permanently deleted.
+
+![Archive overview](screenshots/archive.png)
+
+![Archive detail](screenshots/archive1.png)
+
 
 ## Features
 - 🍂 **Leaf quick-capture**: global shortcut (default **⌃⌥N**, changeable in Settings) opens a transparent leaf to type on. `⌘↩` pins it, `Esc` leaves the text box, `Esc` again closes. Your draft is autosaved.
