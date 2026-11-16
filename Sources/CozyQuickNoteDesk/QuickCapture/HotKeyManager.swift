@@ -12,9 +12,27 @@ final class HotKeyManager {
     private var hotKeyRef: EventHotKeyRef?
     private var handlerRef: EventHandlerRef?
 
-    func register(keyCode: UInt32, modifiers: UInt32) {
+    /// Makes `shortcut` the active global shortcut, replacing the previous one.
+    /// Returns false if macOS refuses it (for example another app already owns it).
+    @discardableResult
+    func register(_ shortcut: Shortcut) -> Bool {
+        installHandlerIfNeeded()
         unregister()
 
+        let hotKeyID = EventHotKeyID(signature: OSType(0x434E5444), id: 1) // 'CNTD'
+        let status = RegisterEventHotKey(shortcut.keyCode, shortcut.modifiers, hotKeyID,
+                                         GetApplicationEventTarget(), 0, &hotKeyRef)
+        if status != noErr { hotKeyRef = nil }
+        return status == noErr
+    }
+
+    func unregister() {
+        if let hotKeyRef { UnregisterEventHotKey(hotKeyRef) }
+        hotKeyRef = nil
+    }
+
+    private func installHandlerIfNeeded() {
+        guard handlerRef == nil else { return }
         var eventType = EventTypeSpec(
             eventClass: OSType(kEventClassKeyboard),
             eventKind: UInt32(kEventHotKeyPressed)
@@ -32,15 +50,5 @@ final class HotKeyManager {
             Unmanaged.passUnretained(self).toOpaque(),
             &handlerRef
         )
-
-        let hotKeyID = EventHotKeyID(signature: OSType(0x434E5444), id: 1) // 'CNTD'
-        RegisterEventHotKey(keyCode, modifiers, hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef)
-    }
-
-    func unregister() {
-        if let hotKeyRef { UnregisterEventHotKey(hotKeyRef) }
-        if let handlerRef { RemoveEventHandler(handlerRef) }
-        hotKeyRef = nil
-        handlerRef = nil
     }
 }

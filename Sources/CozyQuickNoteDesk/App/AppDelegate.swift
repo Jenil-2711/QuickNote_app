@@ -14,10 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         HotKeyManager.shared.onTrigger = {
             LeafCaptureController.shared.toggle()
         }
-        HotKeyManager.shared.register(
-            keyCode: AppConstants.hotKeyCode,
-            modifiers: AppConstants.hotKeyModifiers
-        )
+        ShortcutSettings.shared.applyAtLaunch()
     }
 
     /// Esc: the first press leaves the text box (stops the blinking cursor);

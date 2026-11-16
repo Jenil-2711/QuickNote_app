@@ -4,6 +4,7 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("showDecorations") private var showLights = true
     @AppStorage("noteFontSize") private var noteFontSize = 15.0
+    @ObservedObject private var shortcuts = ShortcutSettings.shared
 
     var body: some View {
         VStack(spacing: 0) {
@@ -18,14 +19,14 @@ struct SettingsView: View {
                 section("Quick capture") {
                     HStack(spacing: 12) {
                         Text("Shortcut").font(Theme.serif(14, weight: .regular))
-                        Text(AppConstants.hotKeyDisplay)
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(RoundedRectangle(cornerRadius: 6).fill(Theme.beige))
-                            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(Theme.walnut.opacity(0.4)))
+                        ShortcutRecorder(settings: shortcuts)
                     }
-                    Text("Built into the app. To change it, edit AppConstants.swift and rebuild.")
+                    if let message = shortcuts.message {
+                        Text(message)
+                            .font(Theme.hand(13))
+                            .foregroundColor(Theme.terracotta)
+                    }
+                    Text("Click the shortcut, then press the keys you want. Esc cancels, Delete resets to \(Shortcut.defaultShortcut.display).")
                         .font(Theme.hand(13))
                         .foregroundColor(Theme.ink.opacity(0.7))
                 }
@@ -45,7 +46,7 @@ struct SettingsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(PaperSurface())
         }
-        .frame(width: 460, height: 340)
+        .frame(width: 480, height: 400)
     }
 
     private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {

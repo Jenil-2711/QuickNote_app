@@ -26,9 +26,10 @@ struct CozyQuickNoteDeskApp: App {
 
 struct MenuBarContent: View {
     @Environment(\.openWindow) private var openWindow
+    @ObservedObject private var shortcuts = ShortcutSettings.shared
 
     var body: some View {
-        Button("Drop a Leaf of Thought  (\(AppConstants.hotKeyDisplay))") {
+        Button("Drop a Leaf of Thought  (\(shortcuts.display))") {
             LeafCaptureController.shared.show()
         }
         Button("Open the Study Room") {

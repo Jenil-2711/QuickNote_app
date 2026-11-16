@@ -59,6 +59,8 @@ struct BoardView: View {
 
 /// A little kraft-paper label shown on an empty board.
 struct EmptyBoardTag: View {
+    @ObservedObject private var shortcuts = ShortcutSettings.shared
+
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: "leaf.fill")
@@ -67,7 +69,7 @@ struct EmptyBoardTag: View {
             Text("Your board is clear")
                 .font(Theme.serif(20))
                 .foregroundColor(Theme.ink)
-            Text("Press \(AppConstants.hotKeyDisplay) from anywhere to pin a thought.")
+            Text("Press \(shortcuts.display) from anywhere to pin a thought.")
                 .font(Theme.hand(15))
                 .foregroundColor(Theme.ink.opacity(0.8))
         }

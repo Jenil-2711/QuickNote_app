@@ -13,7 +13,7 @@ A native macOS app that turns your thoughts into sticky notes pinned on a cork b
 -->
 
 ## Features
-- 🍂 **Leaf quick-capture**: global shortcut **⌃⌥N** (built in) opens a transparent leaf to type on. `⌘↩` pins it, `Esc` leaves the text box, `Esc` again closes. Your draft is autosaved.
+- 🍂 **Leaf quick-capture**: global shortcut (default **⌃⌥N**, changeable in Settings) opens a transparent leaf to type on. `⌘↩` pins it, `Esc` leaves the text box, `Esc` again closes. Your draft is autosaved.
 - 📌 **Cork board of sticky notes** in eight cozy stationery designs (spiral notebook, taped page, ring binder, perforated checklist with a chocolate bow, torn paper and more), decorated with little bear, gingerbread, cookie and cupcake stickers. Each new note gets one at random, in your choice of pastel colour, placed naturally on the board, tilted ±4° and draggable. Positions and tilt are remembered.
 - 🌿 **One cohesive room**: the board, the Archive (index cards in a wooden frame), Settings and the leaf popup all share the same wood, paper and warm-light look.
 - ✨ **Fairy lights** gently twinkle over the real bulbs in the room.
@@ -42,7 +42,7 @@ swift test                 # unit tests (storage, damaged file, failing disk, qu
 ```
 Package.swift
 Sources/CozyQuickNoteDesk/
-  App/            entry point, app delegate, constants (hard-coded shortcut)
+  App/            entry point, app delegate, constants
   Models/         Note, NoteColor, NoteDesign (the 8 designs), NotePlacement
   Storage/        JSONNoteStore (atomic, damage-safe)
   Managers/       NoteManager (the app's "brain")
@@ -72,7 +72,7 @@ python3 scripts/generate_notes.py    # the 8 sticky-note designs
 Want a different mood? Edit the colours and object positions in `scripts/generate_assets.py` and re-run it. The cork-board position and light positions are exported to Swift automatically.
 
 ## Customising
-- **Shortcut:** edit `hotKeyCode` / `hotKeyModifiers` in `AppConstants.swift`.
+- **Shortcut:** change it in Settings (⌘,): click the shortcut, then press the keys you want.
 - **Palette and fonts:** `Theme/Theme.swift`.
 - **Room:** `scripts/generate_assets.py`.
 - **Note designs:** `scripts/generate_notes.py` (paper layout, stickers, and where text may be written).
