@@ -22,6 +22,7 @@ struct RootView: View {
         }
         .frame(minWidth: 900, minHeight: 620)
         .background(Theme.walnut)
+        .ignoresSafeArea(.container, edges: .top)     // the walnut bar sits under the transparent title bar
     }
 }
 

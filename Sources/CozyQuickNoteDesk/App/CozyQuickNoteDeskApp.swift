@@ -1,21 +1,14 @@
 import SwiftUI
 
+/// The app has no window of its own at start-up: it lives in the menu bar. The study-room
+/// window is created on demand by MainWindowController.
 @main
 struct CozyQuickNoteDeskApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @StateObject private var manager = NoteManager.shared
 
     var body: some Scene {
-        Window(AppConstants.appName, id: "desk") {
-            RootView()
-                .environmentObject(manager)
-        }
-        .windowStyle(.hiddenTitleBar)
-        .defaultSize(width: 1200, height: 780)
-
         MenuBarExtra(AppConstants.appName, systemImage: "leaf.fill") {
             MenuBarContent()
-                .environmentObject(manager)
         }
 
         Settings {
@@ -25,7 +18,6 @@ struct CozyQuickNoteDeskApp: App {
 }
 
 struct MenuBarContent: View {
-    @Environment(\.openWindow) private var openWindow
     @ObservedObject private var shortcuts = ShortcutSettings.shared
 
     var body: some View {
@@ -33,11 +25,15 @@ struct MenuBarContent: View {
             LeafCaptureController.shared.show()
         }
         Button("Open the Study Room") {
+            MainWindowController.shared.show()
+        }
+        Button("Settings…") {
             NSApp.activate(ignoringOtherApps: true)
-            openWindow(id: "desk")
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         }
         Divider()
-        Button("Quit \(AppConstants.appName)") {
+        Button("Quit Completely (turns the shortcut off)") {
+            AppLifecycle.allowQuit = true
             NSApp.terminate(nil)
         }
     }

@@ -36,6 +36,20 @@ Completed notes are stored in the archive, where they can be restored or permane
 ![Archive detail](screenshots/archive1.png)
 
 
+## Download (no Terminal needed)
+
+1. Open the [**Releases**](https://github.com/Jenil-2711/QuickNote_app/releases/latest) page and download `CozyQuickNoteDesk-<version>.dmg`.
+2. Open the disk image and drag **Cozy Quick-Note Desk** into **Applications**.
+3. Open it from Launchpad or Spotlight. A leaf appears in the menu bar and the shortcut works from any app.
+
+Works on macOS 13 or later, on both Apple Silicon and Intel Macs.
+
+**First launch:** the app is free and open source but not notarized by Apple (that needs a paid developer account), so macOS may say it "can't be opened". This is normal for indie apps. Do this once:
+- **Right-click** (or Control-click) the app, choose **Open**, then click **Open** again; or
+- open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**.
+
+Prefer to build it yourself? Clone the repo and run `./scripts/build_app.sh --install`.
+
 ## Features
 - 🍂 **Leaf quick-capture**: global shortcut (default **⌃⌥N**, changeable in Settings) opens a transparent leaf to type on. `⌘↩` pins it, `Esc` leaves the text box, `Esc` again closes. Your draft is autosaved.
 - 📌 **Cork board of sticky notes** in eight cozy stationery designs (spiral notebook, taped page, ring binder, perforated checklist with a chocolate bow, torn paper and more), decorated with little bear, gingerbread, cookie and cupcake stickers. Each new note gets one at random, in your choice of pastel colour, placed naturally on the board, tilted ±4° and draggable. Positions and tilt are remembered.
@@ -45,6 +59,7 @@ Completed notes are stored in the archive, where they can be restored or permane
 - 💾 **Safe storage**: one JSON file, atomic writes, damaged files set aside (never deleted).
 - 🔒 **Private**: no accounts, no cloud, no network.
 - 🧭 Menu bar icon keeps the shortcut alive after you close the main window.
+- 🌙 **Runs silently**: starts quietly at login (optional), shows no Dock icon while you use the shortcut, and appears in the Dock only while the study-room window is open. A real quit is in the menu bar (Quit Completely).
 
 ## Requirements
 macOS 13+, Xcode 15+ (or the Swift 5.9+ toolchain).

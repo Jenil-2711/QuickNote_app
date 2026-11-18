@@ -13,6 +13,11 @@ enum AppResources {
 
     private static let cache = NSCache<NSString, NSImage>()
 
+    /// Frees every cached picture (called when the room window closes).
+    static func clearCache() {
+        cache.removeAllObjects()
+    }
+
     /// Loads `name.png` or `name.jpg` from the Resources folder (cached), or nil if neither exists.
     static func image(_ name: String) -> NSImage? {
         if let cached = cache.object(forKey: name as NSString) { return cached }

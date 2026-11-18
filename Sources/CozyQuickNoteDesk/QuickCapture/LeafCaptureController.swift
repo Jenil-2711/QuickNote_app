@@ -15,8 +15,10 @@ final class LeafCaptureController: NSObject {
     private var panel: LeafPanel?
     private let panelSize = NSSize(width: 620, height: 720)
 
+    var isShowing: Bool { panel?.isVisible == true }
+
     func toggle() {
-        if panel?.isVisible == true { hide() } else { show() }
+        if isShowing { hide() } else { show() }
     }
 
     func show() {
@@ -38,6 +40,7 @@ final class LeafCaptureController: NSObject {
 
     func hide() {
         panel?.orderOut(nil)
+        panel?.contentView = nil          // release the leaf's views while it is out of sight
     }
 
     // MARK: - Private

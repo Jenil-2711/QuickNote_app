@@ -5,6 +5,8 @@ struct SettingsView: View {
     @AppStorage("showDecorations") private var showLights = true
     @AppStorage("noteFontSize") private var noteFontSize = 15.0
     @ObservedObject private var shortcuts = ShortcutSettings.shared
+    @State private var openAtLogin = LoginItem.isEnabled
+    @State private var startupMessage: String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,6 +33,23 @@ struct SettingsView: View {
                         .foregroundColor(Theme.ink.opacity(0.7))
                 }
 
+                section("Startup") {
+                    Toggle("Open at login", isOn: openAtLoginBinding)
+                        .toggleStyle(.switch)
+                        .tint(Theme.sage)
+                        .disabled(!LoginItem.isAvailable)
+                    if let message = startupMessage {
+                        Text(message)
+                            .font(Theme.hand(13))
+                            .foregroundColor(Theme.terracotta)
+                    }
+                    Text(LoginItem.isAvailable
+                         ? "Keeps the app quietly in the menu bar after you log in, so the shortcut always works."
+                         : "Available once the app is installed in your Applications folder.")
+                        .font(Theme.hand(13))
+                        .foregroundColor(Theme.ink.opacity(0.7))
+                }
+
                 section("Appearance") {
                     Toggle("Twinkling fairy lights", isOn: $showLights)
                         .toggleStyle(.switch)
@@ -46,7 +65,24 @@ struct SettingsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(PaperSurface())
         }
-        .frame(width: 480, height: 400)
+        .frame(width: 480, height: 500)
+    }
+
+    private var openAtLoginBinding: Binding<Bool> {
+        Binding(
+            get: { openAtLogin },
+            set: { wanted in
+                do {
+                    try LoginItem.setEnabled(wanted)
+                    startupMessage = LoginItem.needsApproval
+                        ? "Also allow it in System Settings → General → Login Items."
+                        : nil
+                } catch {
+                    startupMessage = "Couldn't change this: \(error.localizedDescription)"
+                }
+                openAtLogin = LoginItem.isEnabled
+            }
+        )
     }
 
     private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
