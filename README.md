@@ -2,7 +2,7 @@
 
 A native macOS app that turns your thoughts into sticky notes pinned on a cork board, in a warm, softly lit **virtual study room**. Wooden desk, ivy, shelves of books, a glowing lamp and twinkling fairy lights. Every screen belongs to the same room.
 
-> Press a shortcut from anywhere → a transparent **maple leaf** floats up → write your thought → it's pinned on your board. Tick the circle when it's done and it fades into the Archive.
+> Press a shortcut from anywhere → a translucent **leaf** floats up → write your thought → it's pinned on your board. Tick the circle when it's done and it fades into the Archive.
 
 **Capture instantly · save automatically · organize naturally · complete peacefully.**
 
@@ -122,6 +122,10 @@ Want a different mood? Edit the colours and object positions in `scripts/generat
 - [x] Virtual study room, cork board, shaped notes, dragging
 - [x] Completion, archive, restore
 - [ ] Final polish, app icon, release build
+
+## Project history
+
+This project keeps improving. Every change, bug and lesson is written up in [`improvements/`](improvements/).
 
 ## License
 MIT

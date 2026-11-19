@@ -51,7 +51,7 @@ body.alpha_composite(shade)
 
 # the leaf
 leaf = Image.open(ROOT / "Sources/CozyQuickNoteDesk/Resources/leaf.png").convert("RGBA")
-target_h = int(BODY * 0.70)
+target_h = int(BODY * 0.78)
 leaf = leaf.resize((int(leaf.width * target_h / leaf.height), target_h), Image.LANCZOS).rotate(-8, Image.BICUBIC, expand=True)
 lx, ly = (BODY - leaf.width) // 2, (BODY - leaf.height) // 2 - 6
 lshadow = Image.new("RGBA", body.size, (30, 16, 6, 0))

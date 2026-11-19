@@ -9,8 +9,9 @@ struct LeafCaptureView: View {
     @State private var color: NoteColor = LeafDraft.color
     @FocusState private var focused: Bool
 
-    // The writing area, as fractions of the leaf image (matches the pale glow in leaf.png).
-    private let writing = CGRect(x: 0.27, y: 0.44, width: 0.46, height: 0.27)
+    // The writing area, as fractions of the leaf image (the pale patch in leaf.png).
+    private let writing = LeafLayout.writingArea
+    private let ink = Color(red: 0.10, green: 0.20, blue: 0.09)
 
     var body: some View {
         VStack(spacing: 14) {
@@ -31,22 +32,21 @@ struct LeafCaptureView: View {
                 Image(systemName: "leaf.fill").resizable().scaledToFit().foregroundColor(.orange)
             }
         }
-        .frame(width: 560)
-        .shadow(color: .black.opacity(0.30), radius: 16, x: 0, y: 10)
+        .frame(width: 450)      // no drop shadow: the leaf is translucent, a shadow would show through it
         .overlay(
             GeometryReader { geo in
                 ZStack(alignment: .topLeading) {
                     if text.isEmpty {
                         Text("A thought, an idea…")
                             .font(Theme.hand(18))
-                            .foregroundColor(Theme.ink.opacity(0.45))
+                            .foregroundColor(ink.opacity(0.50))
                             .padding(.horizontal, 5)
                             .padding(.top, 8)
                             .allowsHitTesting(false)
                     }
                     TextEditor(text: textBinding)
                         .font(Theme.hand(18))
-                        .foregroundColor(Theme.ink)
+                        .foregroundColor(ink)
                         .scrollContentBackground(.hidden)
                         .focused($focused)
                 }
