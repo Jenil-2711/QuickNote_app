@@ -86,7 +86,10 @@ ditto -c -k --keepParent "$APP" "$ZIP"
 
 if $INSTALL; then
   echo "▸ Installing into /Applications…"
-  osascript -e "tell application \"$NAME\" to quit" > /dev/null 2>&1 || true
+  # The app keeps running when asked to quit politely (so the shortcut survives), so stop every
+  # copy of it directly: the installed one, the dist one and a `swift run` one.
+  pkill -f "/Contents/MacOS/${EXEC}\$" 2>/dev/null || true
+  pkill -f "\.build/.*/${EXEC}\$" 2>/dev/null || true
   sleep 1
   rm -rf "/Applications/$NAME.app"
   cp -R "$APP" "/Applications/"

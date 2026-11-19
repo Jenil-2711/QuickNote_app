@@ -27,6 +27,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         installEscapeHandler()
 
+        // Another copy was started: show the room here instead of running two apps.
+        DistributedNotificationCenter.default().addObserver(
+            forName: SingleInstance.showRoomNotification, object: nil, queue: .main
+        ) { _ in
+            Task { @MainActor in MainWindowController.shared.show() }
+        }
+
         HotKeyManager.shared.onTrigger = {
             LeafCaptureController.shared.toggle()
         }

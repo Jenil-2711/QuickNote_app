@@ -6,6 +6,10 @@ import SwiftUI
 struct CozyQuickNoteDeskApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
+    init() {
+        SingleInstance.claimOrExit()      // a second copy hands over to the first and quits
+    }
+
     var body: some Scene {
         MenuBarExtra(AppConstants.appName, systemImage: "leaf.fill") {
             MenuBarContent()
