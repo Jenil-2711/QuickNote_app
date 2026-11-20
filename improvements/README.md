@@ -26,3 +26,4 @@ Newest entry last. Plans for what comes next are in [ROADMAP.md](ROADMAP.md), an
 | 10 | [Silent background mode and Open at login](10-silent-background-mode.md) | Reliability |
 | 11 | [One copy at a time](11-single-instance-guard.md) | Reliability |
 | 12 | [A translucent, backlit leaf](12-translucent-leaf.md) | Feature |
+| 13 | [A new app icon](13-app-icon.md) | Polish |

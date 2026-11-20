@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/AppIcon-1024.png" width="140" alt="Cozy Quick-Note Desk app icon"></p>
+
 # 🍃 Cozy Quick-Note Desk
 
 A native macOS app that turns your thoughts into sticky notes pinned on a cork board, in a warm, softly lit **virtual study room**. Wooden desk, ivy, shelves of books, a glowing lamp and twinkling fairy lights. Every screen belongs to the same room.
@@ -100,7 +102,7 @@ docs/             DESIGN.md
 ```
 
 ## About the artwork
-There are **no photographs** in this repository. The room, wood, cork, paper and leaf are all rendered by the Python scripts in `scripts/` (procedural wood grain, cork, plaster, shaded leaves, books, lamp and light glow), so there are no licensing worries and everything is reproducible:
+There are **no photographs** in this repository. The room, wood, cork, paper, sticky notes and leaf are rendered by the Python scripts in `scripts/`, so they can be changed and reproduced. The one exception is the **app icon**, which was created with an AI image tool (Gemini) and then cut out and placed on Apple's icon grid by `scripts/prepare_icon.py` (the earlier cork-and-leaf icon is still drawn by `scripts/generate_icon.py`). To regenerate the code-drawn artwork:
 
 ```bash
 pip install pillow numpy
