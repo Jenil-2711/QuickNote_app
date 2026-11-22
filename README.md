@@ -25,7 +25,7 @@ The cozy workspace, featuring a cork board, customizable sticky notes, and appea
 
 ### Quick Capture
 
-Capture thoughts instantly using the floating maple leaf interface.
+Capture thoughts instantly using the floating translucent leaf interface.
 
 ![Leaf quick capture](screenshots/leaf.png)
 
