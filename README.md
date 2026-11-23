@@ -15,7 +15,7 @@ A native macOS app that turns your thoughts into sticky notes pinned on a cork b
 
 The cozy workspace, featuring a cork board, customizable sticky notes, and appearance settings.
 
-![Main cork board](screenshots/boardmain.png)
+![Main cork board](screenshots/boardmain-v2.png)
 
 ![Sticky notes and stationery designs](screenshots/board2.png)
 
@@ -27,7 +27,7 @@ The cozy workspace, featuring a cork board, customizable sticky notes, and appea
 
 Capture thoughts instantly using the floating translucent leaf interface.
 
-![Leaf quick capture](screenshots/leaf.png)
+![Leaf quick capture](screenshots/leaf-v2.png)
 
 ### Archive
 
