@@ -4,10 +4,10 @@
 #     git tag v1.0.0 && git push origin v1.0.0
 # or run it by hand from the repository's Actions tab ("Run workflow").
 name: Release
+# The tag trigger is off on purpose: v1.0.0 was built and tested locally.
+# Run this by hand from the Actions tab until its build has been verified.
 
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
 
 permissions:

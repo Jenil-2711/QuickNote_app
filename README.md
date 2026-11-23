@@ -47,8 +47,9 @@ Completed notes are stored in the archive, where they can be restored or permane
 Works on macOS 13 or later, on both Apple Silicon and Intel Macs.
 
 **First launch:** the app is free and open source but not notarized by Apple (that needs a paid developer account), so macOS may say it "can't be opened". This is normal for indie apps. Do this once:
-- **Right-click** (or Control-click) the app, choose **Open**, then click **Open** again; or
-- open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**.
+1. Try to open the app. macOS says it can't be opened. Click **Done**.
+2. Open **System Settings → Privacy & Security**, scroll down to the message about *Cozy Quick-Note Desk*, click **Open Anyway** and confirm with your password or Touch ID. (On macOS 13 and 14 you can instead right-click the app and choose **Open**.)
+3. Still blocked? Run `xattr -dr com.apple.quarantine "/Applications/Cozy Quick-Note Desk.app"` in Terminal.
 
 Prefer to build it yourself? Clone the repo and run `./scripts/build_app.sh --install`.
 
