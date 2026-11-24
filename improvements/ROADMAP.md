@@ -9,7 +9,7 @@ Planned work, roughly in order. This is a plan, not a promise.
 - [x] App icon, `.dmg` and `.zip` build script, release workflow
 
 ## Next: finish the product
-- [ ] Publish release v1.0.0 and test installing from the downloaded `.dmg` (not just a development build)
+- [ ] Publish release v1.0.0 and check the download from the Releases page
 - [ ] README screenshots
 - [ ] Apple Developer ID signing and notarization, to remove the first-launch warning
 
@@ -24,6 +24,9 @@ Planned work, roughly in order. This is a plan, not a promise.
 - [ ] Optional reminders and notifications
 
 ## Polish and project quality
+- [x] Bug report and feature request templates, pull request template
+- [x] Contribution guidelines and a changelog
 - [ ] Accessibility and keyboard navigation, onboarding for first-time users
+- [ ] Notes that grow with their text, instead of scrolling inside a small note
+- [ ] Retake the older Archive screenshots
 - [ ] GitHub Actions build and test on every push
-- [ ] Bug report templates and contribution guidelines

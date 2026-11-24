@@ -130,5 +130,9 @@ Want a different mood? Edit the colours and object positions in `scripts/generat
 
 This project keeps improving. Every change, bug and lesson is written up in [`improvements/`](improvements/).
 
+## Contributing
+
+Ideas and bug reports are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md); the history of every change is in [`improvements/`](improvements/).
+
 ## License
 MIT
