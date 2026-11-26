@@ -8,6 +8,7 @@ struct StickyNoteView: View {
 
     @EnvironmentObject private var manager: NoteManager
     @AppStorage("noteFontSize") private var fontSize = 15.0
+    @ObservedObject private var navigation = AppNavigation.shared
 
     @State private var dragOffset: CGSize = .zero
     @State private var isHovering = false
@@ -63,6 +64,15 @@ struct StickyNoteView: View {
             .scrollContentBackground(.hidden)
             .frame(width: tr.width * side, height: tr.height * side)
             .position(x: tr.midX * side, y: tr.midY * side)
+
+            if navigation.highlightedNoteID == note.id {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color(red: 1.0, green: 0.84, blue: 0.35), lineWidth: 5)
+                    .shadow(color: Color(red: 1.0, green: 0.78, blue: 0.2), radius: 12)
+                    .frame(width: side - 6, height: side - 6)
+                    .allowsHitTesting(false)
+                    .transition(.opacity)
+            }
 
             if let pinY = note.design.pinY {
                 PushPin(color: pinColor)

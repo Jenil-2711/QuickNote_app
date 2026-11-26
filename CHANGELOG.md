@@ -2,6 +2,14 @@
 
 All notable changes are listed here. The longer story of each change, including bugs and what was learned, is in [`improvements/`](improvements/).
 
+## [Unreleased]
+
+### Added
+- **Search notes**: a second global shortcut (default ⌃⌥F, changeable in Settings) opens a search window. Type to filter your notes, use the arrow keys, press Return to jump to the note.
+
+### Changed
+- Settings now shows both shortcuts in one place.
+
 ## [1.0.0] - 2026-11-24
 
 First public release.

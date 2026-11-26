@@ -22,8 +22,8 @@ struct ShortcutRecorder: View {
 
             Button("Reset") { settings.resetToDefault() }
                 .buttonStyle(CozyButtonStyle(kind: .plain))
-                .disabled(settings.shortcut == Shortcut.defaultShortcut)
-                .opacity(settings.shortcut == Shortcut.defaultShortcut ? 0.5 : 1)
+                .disabled(settings.shortcut == settings.action.defaultShortcut)
+                .opacity(settings.shortcut == settings.action.defaultShortcut ? 0.5 : 1)
         }
         .onDisappear {
             if isRecording { stopRecording(cancelled: true) }
@@ -35,7 +35,7 @@ struct ShortcutRecorder: View {
     private func startRecording() {
         isRecording = true
         settings.message = nil
-        settings.suspendHotKey()       // so pressing the current shortcut records it instead of firing it
+        ShortcutSettings.suspendAll()  // so pressing a current shortcut records it instead of firing it
 
         monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             handle(event)
@@ -65,6 +65,6 @@ struct ShortcutRecorder: View {
         if let monitor { NSEvent.removeMonitor(monitor) }
         monitor = nil
         isRecording = false
-        if cancelled { settings.resumeHotKey() }
+        if cancelled { ShortcutSettings.resumeAll() }
     }
 }

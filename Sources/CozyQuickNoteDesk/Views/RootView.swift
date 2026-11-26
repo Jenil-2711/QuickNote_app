@@ -2,19 +2,13 @@ import SwiftUI
 
 /// The study-room window: a walnut top bar over either the cork board or the archive.
 struct RootView: View {
-    enum Tab: String, CaseIterable, Identifiable {
-        case board = "Board"
-        case archive = "Archive"
-        var id: String { rawValue }
-    }
-
-    @State private var tab: Tab = .board
+    @ObservedObject private var navigation = AppNavigation.shared
 
     var body: some View {
         VStack(spacing: 0) {
-            TopBar(tab: $tab)
+            TopBar(tab: $navigation.tab)
             Group {
-                switch tab {
+                switch navigation.tab {
                 case .board:   BoardView()
                 case .archive: ArchiveView()
                 }
@@ -28,7 +22,7 @@ struct RootView: View {
 
 /// A walnut plank across the top of the window, with paper tabs and a "New Note" button.
 struct TopBar: View {
-    @Binding var tab: RootView.Tab
+    @Binding var tab: RoomTab
     @EnvironmentObject private var manager: NoteManager
 
     var body: some View {
@@ -40,7 +34,7 @@ struct TopBar: View {
                 .foregroundColor(Theme.cream)
             Spacer()
             HStack(spacing: 6) {
-                ForEach(RootView.Tab.allCases) { item in
+                ForEach(RoomTab.allCases) { item in
                     tabButton(item)
                 }
             }
@@ -64,7 +58,7 @@ struct TopBar: View {
         .zIndex(1)
     }
 
-    private func tabButton(_ item: RootView.Tab) -> some View {
+    private func tabButton(_ item: RoomTab) -> some View {
         let selected = tab == item
         return Button { tab = item } label: {
             Text(item.rawValue)

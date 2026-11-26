@@ -22,11 +22,15 @@ struct CozyQuickNoteDeskApp: App {
 }
 
 struct MenuBarContent: View {
-    @ObservedObject private var shortcuts = ShortcutSettings.shared
+    @ObservedObject private var captureShortcut = ShortcutSettings.capture
+    @ObservedObject private var searchShortcut = ShortcutSettings.search
 
     var body: some View {
-        Button("Drop a Leaf of Thought  (\(shortcuts.display))") {
+        Button("Drop a Leaf of Thought  (\(captureShortcut.display))") {
             LeafCaptureController.shared.show()
+        }
+        Button("Search Notes  (\(searchShortcut.display))") {
+            SearchController.shared.show()
         }
         Button("Open the Study Room") {
             MainWindowController.shared.show()

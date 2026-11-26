@@ -74,20 +74,20 @@ struct Shortcut: Codable, Equatable {
 
     // MARK: - Saving
 
-    private static let storageKey = "quickCaptureShortcut"
-
-    static func load(from defaults: UserDefaults = .standard) -> Shortcut {
-        guard let data = defaults.data(forKey: storageKey),
+    static func load(key: String = "quickCaptureShortcut",
+                     fallback: Shortcut = .defaultShortcut,
+                     from defaults: UserDefaults = .standard) -> Shortcut {
+        guard let data = defaults.data(forKey: key),
               let saved = try? JSONDecoder().decode(Shortcut.self, from: data),
               saved.isAcceptable else {
-            return .defaultShortcut
+            return fallback
         }
         return saved
     }
 
-    func save(to defaults: UserDefaults = .standard) {
+    func save(key: String = "quickCaptureShortcut", to defaults: UserDefaults = .standard) {
         if let data = try? JSONEncoder().encode(self) {
-            defaults.set(data, forKey: Shortcut.storageKey)
+            defaults.set(data, forKey: key)
         }
     }
 }

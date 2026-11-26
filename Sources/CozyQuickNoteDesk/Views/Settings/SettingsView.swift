@@ -4,7 +4,8 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("showDecorations") private var showLights = true
     @AppStorage("noteFontSize") private var noteFontSize = 15.0
-    @ObservedObject private var shortcuts = ShortcutSettings.shared
+    @ObservedObject private var captureShortcut = ShortcutSettings.capture
+    @ObservedObject private var searchShortcut = ShortcutSettings.search
     @State private var openAtLogin = LoginItem.isEnabled
     @State private var startupMessage: String?
 
@@ -18,17 +19,10 @@ struct SettingsView: View {
                 .background(WoodSurface())
 
             VStack(alignment: .leading, spacing: 22) {
-                section("Quick capture") {
-                    HStack(spacing: 12) {
-                        Text("Shortcut").font(Theme.serif(14, weight: .regular))
-                        ShortcutRecorder(settings: shortcuts)
-                    }
-                    if let message = shortcuts.message {
-                        Text(message)
-                            .font(Theme.hand(13))
-                            .foregroundColor(Theme.terracotta)
-                    }
-                    Text("Click the shortcut, then press the keys you want. Esc cancels, Delete resets to \(Shortcut.defaultShortcut.display).")
+                section("Shortcuts") {
+                    shortcutRow(captureShortcut)
+                    shortcutRow(searchShortcut)
+                    Text("Click a shortcut, then press the keys you want. Esc cancels, Delete resets it.")
                         .font(Theme.hand(13))
                         .foregroundColor(Theme.ink.opacity(0.7))
                 }
@@ -65,7 +59,23 @@ struct SettingsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(PaperSurface())
         }
-        .frame(width: 480, height: 500)
+        .frame(width: 500, height: 560)
+    }
+
+    private func shortcutRow(_ settings: ShortcutSettings) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 12) {
+                Text(settings.action.title)
+                    .font(Theme.serif(14, weight: .regular))
+                    .frame(width: 110, alignment: .leading)
+                ShortcutRecorder(settings: settings)
+            }
+            if let message = settings.message {
+                Text(message)
+                    .font(Theme.hand(13))
+                    .foregroundColor(Theme.terracotta)
+            }
+        }
     }
 
     private var openAtLoginBinding: Binding<Bool> {

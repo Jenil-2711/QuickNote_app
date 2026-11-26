@@ -62,6 +62,7 @@ Prefer to build it yourself? Clone the repo and run `./scripts/build_app.sh --in
 - 💾 **Safe storage**: one JSON file, atomic writes, damaged files set aside (never deleted).
 - 🔒 **Private**: no accounts, no cloud, no network.
 - 🧭 Menu bar icon keeps the shortcut alive after you close the main window.
+- 🔎 **Search notes**: a second shortcut (default ⌃⌥F) opens a search window; type, choose with the arrow keys, press Return to jump to the note.
 - 🌙 **Runs silently**: starts quietly at login (optional), shows no Dock icon while you use the shortcut, and appears in the Dock only while the study-room window is open. A real quit is in the menu bar (Quit Completely).
 
 ## Requirements

@@ -34,10 +34,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             Task { @MainActor in MainWindowController.shared.show() }
         }
 
-        HotKeyManager.shared.onTrigger = {
+        HotKeyManager.shared.setHandler(ShortcutAction.capture.hotKeyID) {
             LeafCaptureController.shared.toggle()
         }
-        ShortcutSettings.shared.applyAtLaunch()
+        HotKeyManager.shared.setHandler(ShortcutAction.search.hotKeyID) {
+            SearchController.shared.toggle()
+        }
+        ShortcutSettings.capture.applyAtLaunch()
+        ShortcutSettings.search.applyAtLaunch()
 
         // Started by you: show the room. Started by macOS at login: stay silent in the menu bar.
         if !Self.wasLaunchedAtLogin() {
@@ -107,10 +111,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Keys
 
     /// Esc: the first press leaves the text box (stops the blinking cursor);
-    /// on the leaf, a second press closes it.
+    /// on the leaf, a second press closes it. In the search window, Esc closes it at once.
     private func installEscapeHandler() {
         escapeMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            guard event.keyCode == 53, let window = event.window ?? NSApp.keyWindow else { return event }
+            guard let window = event.window ?? NSApp.keyWindow else { return event }
+
+            // The search window: Esc closes it, the arrow keys move through the results.
+            if window is SearchPanel {
+                switch event.keyCode {
+                case 53:  SearchController.shared.hide(); return nil
+                case 125: SearchController.shared.model.moveSelection(1); return nil
+                case 126: SearchController.shared.model.moveSelection(-1); return nil
+                default:  return event
+                }
+            }
+
+            guard event.keyCode == 53 else { return event }
             if window.firstResponder is NSTextView {
                 window.makeFirstResponder(nil)
                 return nil
