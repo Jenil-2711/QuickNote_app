@@ -10,12 +10,10 @@ Planned work, roughly in order. This is a plan, not a promise.
 - [x] Release v1.0.0
 - [x] Bug report and feature request templates, contribution guide, changelog
 - [x] Search notes
+- [x] Notes that grow with their text
+- [x] More automated tests (data safety), GitHub Actions build and test, release routine
 
 ## Next
-- [ ] Notes that grow with their text, instead of scrolling inside a small note
-- [ ] More automated tests: save failures, a damaged file on disk, notes saved by older versions
-- [ ] GitHub Actions: build and test on every push
-- [ ] A short release routine (`RELEASING.md`): bump the version, update the changelog, tag, build
 - [ ] Onboarding for first-time users
 - [ ] Pinning and priority for notes
 - [ ] Accessibility and keyboard navigation

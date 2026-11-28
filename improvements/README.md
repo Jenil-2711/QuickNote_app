@@ -29,3 +29,5 @@ Newest entry last. Plans for what comes next are in [ROADMAP.md](ROADMAP.md), an
 | 13 | [A new app icon](13-app-icon.md) | Polish |
 | 14 | [Release v1.0.0](14-release-v1.md) | Packaging |
 | 15 | [Search notes](15-search-notes.md) | Feature |
+| 16 | [Notes that grow with their text](16-notes-grow-with-text.md) | Feature |
+| 17 | [Tests, automatic checks and a release routine](17-tests-ci-and-release-routine.md) | Engineering quality |
