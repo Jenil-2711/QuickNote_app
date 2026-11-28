@@ -18,7 +18,15 @@ struct StickyNoteView: View {
     private let controlsHeight: CGFloat = 30
 
     private var baseSide: CGFloat { min(max(board.width * 0.17, 120), 180) }
-    private var side: CGFloat { baseSide * CGFloat(note.design.sizeScale) }
+    /// The note's size when its text is short.
+    private var restingSide: CGFloat { baseSide * CGFloat(note.design.sizeScale) }
+    /// A note may grow up to about twice its size, but never taller than most of the board.
+    private var maxGrowth: CGFloat { min(2.2, max(1, (board.height * 0.88 - controlsHeight) / restingSide)) }
+    /// Grows with its text, so long thoughts stay readable instead of scrolling inside a small note.
+    private var side: CGFloat {
+        restingSide * NoteGrowth.scale(text: note.text, design: note.design, side: restingSide,
+                                       fontSize: CGFloat(fontSize), maxScale: maxGrowth)
+    }
 
     private var pinColor: Color {
         let colors = [Color(red: 0.78, green: 0.22, blue: 0.20),
@@ -57,7 +65,10 @@ struct StickyNoteView: View {
 
             TextEditor(text: Binding(
                 get: { note.text },
-                set: { manager.updateText(id: note.id, text: $0) }
+                set: {
+                    manager.updateText(id: note.id, text: $0)
+                    if side > restingSide { manager.bringToFront(id: note.id) }   // a grown note stays on top while you write
+                }
             ))
             .font(Theme.hand(CGFloat(fontSize)))
             .foregroundColor(Theme.ink)

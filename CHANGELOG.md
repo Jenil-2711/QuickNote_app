@@ -9,6 +9,7 @@ All notable changes are listed here. The longer story of each change, including 
 
 ### Changed
 - Settings now shows both shortcuts in one place.
+- Notes now grow with their text (up to about twice their size), so long thoughts stay readable instead of scrolling inside a small note.
 
 ## [1.0.0] - 2026-11-24
 
